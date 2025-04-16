@@ -1,6 +1,6 @@
 {
     "name": "create-ton-ai",
-    "version": "0.22.6",
+    "version": "0.22.7",
     "license": "MIT",
     "description": "Tool to quickly create TON projects",
     "author": "TonTech",
@@ -11,7 +11,9 @@
     "files": [
         "dist/**/*"
     ],
-    "bin": "./dist/cli.js",
+    "bin": {
+        "create-ton-ai": "dist/cli.js"
+    },
     "scripts": {
         "build": "rm -rf dist && tsc && cp -r template dist/template"
     },
