@@ -3,9 +3,12 @@
     "version": "0.0.1",
     "scripts": {
         "bp": "blueprint",
+        "prestart": "eslint . --ext .ts",
         "start": "blueprint run",
         "build": "blueprint build",
-        "test": "jest --verbose"
+        "pretest": "eslint . --ext .ts",
+        "test": "jest --verbose",
+        "lint": "eslint . --ext .ts"
     },
     "devDependencies": {
         "@ton-ai-core/blueprint": "^0.30.10",
