@@ -1,6 +1,6 @@
 {
     "name": "create-ton-ai",
-    "version": "0.22.4",
+    "version": "0.22.5",
     "license": "MIT",
     "description": "Tool to quickly create TON projects",
     "author": "TonTech",
