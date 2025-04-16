@@ -22,15 +22,27 @@ module.exports = {
     "@typescript-eslint/no-unsafe-return": "error",
     "@ton-ai-core/suggest-members/suggest-members": "error",
     "@ton-ai-core/suggest-members/suggest-imports": "error",
-    "no-restricted-imports": ["error", {
-      "paths": [{
-        "name": "@ton/blueprint",
-        "message": "This project uses @ton-ai-core/blueprint rather than the deprecated @ton/blueprint library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
-      }],
-      "patterns": [{
-        "group": ["@ton/blueprint/*"],
-        "message": "This project uses @ton-ai-core/blueprint rather than the deprecated @ton/blueprint library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
-      }]
-    }]
+    "no-restricted-imports": [
+      "error", {
+        "paths": [{
+          "name": "@ton/blueprint",
+          "message": "This project uses @ton-ai-core/blueprint rather than the deprecated @ton/blueprint library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+        }],
+        "patterns": [{
+          "group": ["@ton/blueprint/*"],
+          "message": "This project uses @ton-ai-core/blueprint rather than the deprecated @ton/blueprint library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+        }]
+      },
+      "error", {
+        "paths": [{
+          "name": "@nowarp/blueprint-misti",
+          "message": "This project uses @ton-ai-core/blueprint-misti rather than the deprecated @nowarp/blueprint-misti library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+        }],
+        "patterns": [{
+          "group": ["@nowarp/blueprint-misti*"],
+          "message": "This project uses @ton-ai-core/blueprint-misti rather than the deprecated @nowarp/blueprint-misti library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+        }]
+      }
+    ]
   }
 }; 
