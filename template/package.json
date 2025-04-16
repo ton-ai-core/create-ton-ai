@@ -11,7 +11,7 @@
         "lint": "eslint . --ext .ts"
     },
     "devDependencies": {
-        "@ton-ai-core/blueprint": "^0.30.12",
+        "@ton-ai-core/blueprint": "^0.30.13",
         "@ton-ai-core/eslint-plugin-suggest-members": "^1.5.3",
         "@typescript-eslint/eslint-plugin": "^8.30.1",
         "@typescript-eslint/parser": "^8.30.1",
