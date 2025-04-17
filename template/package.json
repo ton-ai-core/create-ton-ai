@@ -12,7 +12,7 @@
         "misti": "blueprint misti"
     },
     "devDependencies": {
-        "@ton-ai-core/blueprint-misti": "^0.8.3",
+        "@ton-ai-core/blueprint-misti": "^0.8.6",
         "@ton-ai-core/blueprint": "^0.30.16",
         "@ton-ai-core/eslint-plugin-suggest-members": "^1.5.3",
         "@typescript-eslint/eslint-plugin": "^8.30.1",
