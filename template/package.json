@@ -6,7 +6,7 @@
         "prestart": "eslint . --ext .ts",
         "start": "blueprint run",
         "build": "blueprint build",
-        "pretest": "eslint . --ext .ts",
+        "pretest": "npx blueprint build --all && eslint . --ext .ts",
         "test": "jest --verbose",
         "lint": "eslint . --ext .ts",
         "misti": "blueprint misti"
