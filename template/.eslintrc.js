@@ -32,6 +32,10 @@ module.exports = {
           {
             "name": "@nowarp/blueprint-misti",
             "message": "This project uses @ton-ai-core/blueprint-misti rather than the deprecated @nowarp/blueprint-misti library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+          },
+          {
+            "name": "@ton-community/sandbox",
+            "message": "This project uses @ton/sandbox rather than the deprecated @ton-community/sandbox library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
           }
         ],
         "patterns": [
@@ -40,8 +44,12 @@ module.exports = {
             "message": "This project uses @ton-ai-core/blueprint rather than the deprecated @ton/blueprint library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
           },
           {
-            "group": ["@nowarp/blueprint-misti*"],
+            "group": ["@nowarp/blueprint-misti/*"],
             "message": "This project uses @ton-ai-core/blueprint-misti rather than the deprecated @nowarp/blueprint-misti library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+          },
+          {
+            "group": ["@ton-community/sandbox/*"],
+            "message": "This project uses @ton-community/sandbox rather than the deprecated @ton/sandbox library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
           }
         ]
       }
