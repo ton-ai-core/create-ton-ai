@@ -3,9 +3,12 @@
     "version": "0.0.1",
     "scripts": {
         "bp": "blueprint",
-        "prestart": "eslint . --ext .ts",
-        "start": "blueprint run",
+        "prebuild": "npx @ton-ai-core/blueprint-linter",
+        "postbuild": "blueprint misti",
         "build": "blueprint build",
+        "prerun:deploy\\w+": "blueprint generate-specs && blueprint test",
+        "prerun:\\w+": "blueprint generate-specs && blueprint test ./tests/$BLUEPRINT_SCRIPT_NAME.spec.ts",
+        "start": "blueprint run",
         "pretest": "npx blueprint build --all && eslint . --ext .ts",
         "test": "jest --verbose",
         "lint": "eslint . --ext .ts",
@@ -14,7 +17,7 @@
     "devDependencies": {
         "@ton-ai-core/blueprint-misti": "^0.8.6",
         "@ton-ai-core/blueprint-sandbox": "^0.1.7",
-        "@ton-ai-core/blueprint": "^0.30.21",
+        "@ton-ai-core/blueprint": "^0.30.22",
         "@ton-ai-core/eslint-plugin-suggest-members": "^1.5.3",
         "@typescript-eslint/eslint-plugin": "^8.30.1",
         "@typescript-eslint/parser": "^8.30.1",
