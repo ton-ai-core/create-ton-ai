@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "scripts": {
         "bp": "blueprint",
-        "prebuild": "npx @ton-ai-core/blueprint-linter",
+        "prebuild": "npx -y @ton-ai-core/blueprint-linter",
         "postbuild": "blueprint misti",
         "build": "blueprint build",
         "prerun:deploy\\w+": "blueprint generate-specs && blueprint test",

@@ -36,7 +36,11 @@ module.exports = {
           {
             "name": "@ton-community/sandbox",
             "message": "This project uses @ton/sandbox rather than the deprecated @ton-community/sandbox library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
-          }
+          },
+          {
+            "name": "@ton-community/test-utils",
+            "message": "This project uses @ton/test-utils rather than the deprecated @ton-community/test-utils library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+          },
         ],
         "patterns": [
           {
@@ -49,8 +53,12 @@ module.exports = {
           },
           {
             "group": ["@ton-community/sandbox/*"],
-            "message": "This project uses @ton-community/sandbox rather than the deprecated @ton/sandbox library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
-          }
+            "message": "This project uses @ton/sandbox rather than the deprecated @ton-community/sandbox library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+          },
+          {
+            "group": ["@ton-community/test-utils/*"],
+            "message": "This project uses @ton/test-utils rather than the deprecated @ton-community/test-utils library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+          },
         ]
       }
     ]
