@@ -4,8 +4,10 @@
     "scripts": {
         "bp": "blueprint",
         "prebuild": "npx -y @ton-ai-core/blueprint-linter",
-        "postbuild": "blueprint misti",
+        "prebuild\\w+": "npx -y @ton-ai-core/blueprint-linter",
         "build": "blueprint build",
+        "postbuild:\\w+": "blueprint misti $BLUEPRINT_SCRIPT_NAME",
+        "postbuild": "blueprint misti --all",
         "prerun:deploy\\w+": "blueprint generate-specs && blueprint test",
         "prerun:\\w+": "blueprint generate-specs && blueprint test ./tests/$BLUEPRINT_SCRIPT_NAME.spec.ts",
         "start": "blueprint run",
@@ -15,10 +17,10 @@
         "misti": "blueprint misti"
     },
     "devDependencies": {
-        "@ton-ai-core/blueprint-misti": "^0.8.6",
+        "@ton-ai-core/blueprint-misti": "^0.8.8",
         "@ton-ai-core/blueprint-sandbox": "^0.1.7",
-        "@ton-ai-core/blueprint": "^0.30.24",
-        "@ton-ai-core/eslint-plugin-suggest-members": "^1.5.3",
+        "@ton-ai-core/blueprint": "^0.30.25",
+        "@ton-ai-core/eslint-plugin-suggest-members": "^1.5.4",
         "@typescript-eslint/eslint-plugin": "^8.30.1",
         "@typescript-eslint/parser": "^8.30.1",
         "eslint": "^8.57.0",
