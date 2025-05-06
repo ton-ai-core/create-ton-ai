@@ -6,15 +6,16 @@
         "prebuild": "npx -y @ton-ai-core/blueprint-linter",
         "prebuild\\w+": "npx -y @ton-ai-core/blueprint-linter",
         "build": "blueprint build",
-        "postbuild:\\w+": "blueprint misti $BLUEPRINT_SCRIPT_NAME",
-        "postbuild": "blueprint misti --all",
+        "postbuild:\\w+": "node insert-c8-ignore.js && blueprint misti $BLUEPRINT_SCRIPT_NAME && node insert-c8-ignore.js",
+        "postbuild": "node insert-c8-ignore.js && blueprint misti --all && node insert-c8-ignore.js",
         "prerun:deploy\\w+": "blueprint generate-specs && blueprint test",
         "prerun:\\w+": "blueprint generate-specs && blueprint test ./tests/$BLUEPRINT_SCRIPT_NAME.spec.ts",
         "start": "blueprint run",
         "pretest": "npx blueprint build --all && eslint . --ext .ts",
         "test": "jest --verbose",
         "lint": "eslint . --ext .ts",
-        "misti": "blueprint misti"
+        "misti": "blueprint misti",
+        "coverage": "jest --coverage"
     },
     "devDependencies": {
         "@ton-ai-core/blueprint-misti": "^0.8.8",
