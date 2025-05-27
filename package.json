@@ -1,12 +1,13 @@
 {
     "name": "create-ton-ai",
-    "version": "0.22.19",
+    "version": "0.22.20",
     "license": "MIT",
     "description": "Tool to quickly create TON projects",
     "author": "TonTech",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ton-ai-core/create-ton-ai.git"
+        "url": "git+https://github.com/ton-ai-core/create-ton-ai.git",
+        "release": "blueprint pack && npm publish --access public"
     },
     "files": [
         "dist/**/*"
