@@ -255,4 +255,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Contract template files are no longer stored in this package, templates from [blueprint](https://github.com/ton-community/blueprint) are now used instead
+- Contract template files are no longer stored in this package, templates from [blueprint](https://github.com/ton-ai-core/blueprint) are now used instead

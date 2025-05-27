@@ -237,7 +237,7 @@ function printResultingUsageDetails(desiredProjectName: string, noCi: boolean) {
     console.log(chalk.greenBright(` >  `) + chalk.cyanBright(`npx blueprint create AnotherContract`));
     console.log(` create a new contract and all related necessary files`);
     console.log(``);
-    console.log(`For help and docs visit https://github.com/ton-community/blueprint`);
+    console.log(`For help and docs visit https://github.com/ton-ai-core/blueprint`);
     console.log(``);
 }
 
