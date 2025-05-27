@@ -6,8 +6,7 @@
     "author": "TonTech",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ton-ai-core/create-ton-ai.git",
-        "release": "blueprint pack && npm publish --access public"
+        "url": "git+https://github.com/ton-ai-core/create-ton-ai.git"
     },
     "files": [
         "dist/**/*"
@@ -16,7 +15,8 @@
         "create-ton-ai": "dist/cli.js"
     },
     "scripts": {
-        "build": "rm -rf dist && tsc && cp -r template dist/template"
+        "build": "rm -rf dist && tsc && cp -r template dist/template",
+        "release": "blueprint pack && npm publish --access public"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.1",
