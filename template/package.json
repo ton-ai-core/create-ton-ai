@@ -37,8 +37,8 @@
         "ts-jest": "^29.3.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.8.3",
-        "@ton/tolk-js": "^0.10.0",
-        "@tact-lang/compiler": "^1.6.7",
+        "@ton/tolk-js": "^0.12.0",
+        "@tact-lang/compiler": "^1.6.11",
         "@ton-community/func-js": "^0.9.1"
     }
 }
