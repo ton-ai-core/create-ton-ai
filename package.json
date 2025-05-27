@@ -16,7 +16,7 @@
     },
     "scripts": {
         "build": "rm -rf dist && tsc && cp -r template dist/template",
-        "release": "blueprint pack && npm publish --access public"
+        "release": "yarn build && npm publish --access public"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.1",
