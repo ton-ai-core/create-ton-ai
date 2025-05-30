@@ -33,14 +33,6 @@ module.exports = {
             "name": "@nowarp/blueprint-misti",
             "message": "This project uses @ton-ai-core/blueprint-misti rather than the deprecated @nowarp/blueprint-misti library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
           },
-          {
-            "name": "@ton-community/sandbox",
-            "message": "This project uses @ton/sandbox rather than the deprecated @ton-community/sandbox library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
-          },
-          {
-            "name": "@ton-community/test-utils",
-            "message": "This project uses @ton/test-utils rather than the deprecated @ton-community/test-utils library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
-          },
         ],
         "patterns": [
           {
@@ -51,13 +43,54 @@ module.exports = {
             "group": ["@nowarp/blueprint-misti/*"],
             "message": "This project uses @ton-ai-core/blueprint-misti rather than the deprecated @nowarp/blueprint-misti library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
           },
+          // Restrict fake versions of official TON libraries - only allow from @ton organization
           {
-            "group": ["@ton-community/sandbox/*"],
-            "message": "This project uses @ton/sandbox rather than the deprecated @ton-community/sandbox library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+            "group": ["@*/cocos-sdk", "!@ton/cocos-sdk"],
+            "message": "Only use the official @ton/cocos-sdk library. Detected potential fake version from another organization."
           },
           {
-            "group": ["@ton-community/test-utils/*"],
-            "message": "This project uses @ton/test-utils rather than the deprecated @ton-community/test-utils library. Please refactor your imports to utilize the enhanced AI-integrated blueprint framework."
+            "group": ["@*/convert-func-to-tolk", "!@ton/convert-func-to-tolk"],
+            "message": "Only use the official @ton/convert-func-to-tolk library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/core", "!@ton/core"],
+            "message": "Only use the official @ton/core library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/crypto", "!@ton/crypto"],
+            "message": "Only use the official @ton/crypto library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/crypto-primitives", "!@ton/crypto-primitives"],
+            "message": "Only use the official @ton/crypto-primitives library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/emulator", "!@ton/emulator"],
+            "message": "Only use the official @ton/emulator library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/phaser-sdk", "!@ton/phaser-sdk"],
+            "message": "Only use the official @ton/phaser-sdk library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/sandbox", "!@ton/sandbox"],
+            "message": "Only use the official @ton/sandbox library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/test-utils", "!@ton/test-utils"],
+            "message": "Only use the official @ton/test-utils library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/tolk-js", "!@ton/tolk-js"],
+            "message": "Only use the official @ton/tolk-js library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/ton", "!@ton/ton"],
+            "message": "Only use the official @ton/ton library. Detected potential fake version from another organization."
+          },
+          {
+            "group": ["@*/vanilla-sdk", "!@ton/vanilla-sdk"],
+            "message": "Only use the official @ton/vanilla-sdk library. Detected potential fake version from another organization."
           },
         ]
       }
