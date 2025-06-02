@@ -11,7 +11,7 @@
         "prerun:deploy\\w+": "blueprint generate-specs && blueprint test",
         "prerun:\\w+": "blueprint generate-specs && blueprint test ./tests/$BLUEPRINT_SCRIPT_NAME.spec.ts",
         "start": "blueprint run",
-        "pretest": "npx blueprint build --all && eslint . --ext .ts",
+        "pretest": "npx rimraf ./build && npx blueprint build --all && eslint . --ext .ts",
         "test": "jest --verbose",
         "lint": "eslint . --ext .ts",
         "misti": "blueprint misti",
