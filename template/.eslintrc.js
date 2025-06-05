@@ -22,6 +22,7 @@ module.exports = {
     "@typescript-eslint/no-unsafe-return": "error",
     "@ton-ai-core/suggest-members/suggest-members": "error",
     "@ton-ai-core/suggest-members/suggest-imports": "error",
+    "@ton-ai-core/suggest-members/suggest-module-paths": "error",
     "no-restricted-imports": [
       "error", {
         "paths": [
