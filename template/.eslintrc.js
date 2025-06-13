@@ -1,19 +1,34 @@
+// .eslintrc.js
 module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: [
     '@typescript-eslint',
-    '@ton-ai-core/suggest-members'
+    '@ton-ai-core/suggest-members',
+    '@eslint-community/eslint-comments'
   ],
   extends: [
-    'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@eslint-community/eslint-comments/recommended'
   ],
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', 'build/**'],
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
     project: './tsconfig.json'
   },
   rules: {
+    '@eslint-community/eslint-comments/no-use':              'error',
+    '@eslint-community/eslint-comments/no-unlimited-disable':'error',
+    '@eslint-community/eslint-comments/disable-enable-pair':'error',
+    '@eslint-community/eslint-comments/no-unused-disable':  'error',
+
+    '@typescript-eslint/ban-ts-comment': ['error', {
+      'ts-ignore':       true,
+      'ts-nocheck':      true,
+      'ts-expect-error': true,
+      'ts-check':        false,
+    }],
+
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/explicit-function-return-type": "error",
     "@typescript-eslint/no-unsafe-assignment": "error",
