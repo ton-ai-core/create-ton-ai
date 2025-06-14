@@ -147,7 +147,7 @@ Session.vim
 
     if (noCi) {
         console.log(`[2/${steps}] Skipping dependencies, git init and contract creation...\n`);
-        printResultingUsageDetails(desiredProjectName, noCi);
+        printResultingUsageDetails(desiredProjectName, noCi, contractName, variant);
         return;
     } else {
         console.log(`[2/${steps}] Installing dependencies...\n`);
@@ -200,10 +200,39 @@ Session.vim
         console.error('Failed to initialize git repository:', (e as any).toString());
     }
 
-    printResultingUsageDetails(desiredProjectName, noCi);
+    printResultingUsageDetails(desiredProjectName, noCi, contractName, variant);
 }
 
-function printResultingUsageDetails(desiredProjectName: string, noCi: boolean) {
+function generateSearchKeywords(projectName: string, contractName: string, variant: string): string[] {
+    const langKey = (variant || '').split('-')[0];
+    const languageMap: Record<string, string> = { func: 'FunC', tolk: 'Tolk', tact: 'Tact' };
+    const language = languageMap[langKey];
+
+    // Split PascalCase / camelCase while keeping acronyms intact (e.g., SBTHamster -> ["SBT", "Hamster"])
+    const splitName = (name: string): string[] => {
+        if (!name) return [];
+        return name.split(/(?=[A-Z][a-z])/).filter(Boolean);
+    };
+
+    const keywordsSet = new Set<string>();
+
+    // Base keywords from the project name
+    splitName(projectName).forEach(k => keywordsSet.add(k));
+    keywordsSet.add(projectName);
+
+    // Add the full contract name
+    if (contractName) keywordsSet.add(contractName);
+
+    // Add language-specific variants for the project-based keywords
+    if (language) {
+        splitName(projectName).forEach(k => keywordsSet.add(`${k} ${language}`));
+        keywordsSet.add(`${projectName} ${language}`);
+    }
+
+    return Array.from(keywordsSet);
+}
+
+function printResultingUsageDetails(desiredProjectName: string, noCi: boolean, contractName: string, variant: string) {
     console.log(`Success!`);
     console.log(
         chalk.blueBright(`
@@ -225,8 +254,8 @@ function printResultingUsageDetails(desiredProjectName: string, noCi: boolean) {
     console.log(chalk.greenBright(` >  `) + chalk.cyanBright(`cd ${desiredProjectName}`));
     console.log(` change directory to your new project`);
     console.log(``);
-    console.log(chalk.greenBright(` >  `) + chalk.cyanBright(`npx blueprint build`));
-    console.log(` choose a smart contract and build it`);
+    console.log(chalk.greenBright(` >  `) + chalk.cyanBright(`npx blueprint build --all`));
+    console.log(` build all smart contracts in the project`);
     console.log(``);
     console.log(chalk.greenBright(` >  `) + chalk.cyanBright(`npx blueprint test`));
     console.log(` run the default project test suite`);
@@ -236,6 +265,29 @@ function printResultingUsageDetails(desiredProjectName: string, noCi: boolean) {
     console.log(``);
     console.log(chalk.greenBright(` >  `) + chalk.cyanBright(`npx blueprint create AnotherContract`));
     console.log(` create a new contract and all related necessary files`);
+    console.log(``);
+
+    // Additional helpful information for users: suggest useful search keywords
+    try {
+        const projectName = path.basename(desiredProjectName);
+        const keywords = generateSearchKeywords(projectName, contractName, variant);
+
+        if (keywords.length) {
+            console.log(``);
+            console.log(
+                `I recommend running search_codebase, search_web, and grepped_codebase with the following keywords: ${keywords.join(", ")}`
+            );
+
+            // Additional suggestion regarding fetch_rules for the chosen language
+            const langKey = (variant || '').split('-')[0];
+            const languageMap: Record<string, string> = { func: 'FunC', tolk: 'Tolk', tact: 'Tact' };
+            const language = languageMap[langKey];
+            if (language) {
+                console.log(`I also recommend enabling fetch_rules related to ${language}.`);
+            }
+        }
+    } catch {}
+
     console.log(``);
     console.log(`For help and docs visit https://github.com/ton-ai-core/blueprint`);
     console.log(``);
