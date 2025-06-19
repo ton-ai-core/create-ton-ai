@@ -36,8 +36,46 @@ const VARIANT_CHOICES = [
     },
 ];
 
+// Function to check if a directory exists and is not empty
+function isDirectoryNotEmpty(directoryPath: string): boolean {
+    try {
+        if (!fs.existsSync(directoryPath)) {
+            return false;
+        }
+        const files = fs.readdirSync(directoryPath);
+        return files.length > 0;
+    } catch (error) {
+        return false;
+    }
+}
+
+// Function to check if we're inside another contract project
+function isInsideContractProject(): boolean {
+    try {
+        // Check current directory and parent directories for blueprint.config.ts
+        let currentDir = process.cwd();
+        const rootDir = path.parse(currentDir).root;
+        
+        while (currentDir !== rootDir) {
+            const blueprintConfigPath = path.join(currentDir, 'blueprint.config.ts');
+            if (fs.existsSync(blueprintConfigPath)) {
+                return true;
+            }
+            currentDir = path.dirname(currentDir);
+        }
+        return false;
+    } catch (error) {
+        return false;
+    }
+}
+
 async function main() {
     console.log();
+
+    // Check if we're inside another contract project
+    if (isInsideContractProject()) {
+        throw new Error('Cannot create a contract inside another contract project. Please run this command from a different directory.');
+    }
 
     const localArgs = arg({
         '--type': String, // one of the VARIANT_CHOICES
@@ -60,6 +98,11 @@ async function main() {
     const name = path.basename(projectPath);
 
     if (name.length === 0) throw new Error('Cannot initialize a project with an empty name');
+
+    // Check if project directory exists and is not empty
+    if (isDirectoryNotEmpty(projectPath)) {
+        throw new Error(`Project directory '${desiredProjectName}' already exists and is not empty. Please choose a different name or empty the directory.`);
+    }
 
     const noCi = localArgs['--no-ci'] ?? false;
 
