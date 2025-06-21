@@ -8,7 +8,8 @@ module.exports = {
   ],
   extends: [
     'plugin:@typescript-eslint/recommended',
-    'plugin:@eslint-community/eslint-comments/recommended'
+    'plugin:@eslint-community/eslint-comments/recommended',
+    'plugin:jest/recommended'
   ],
   ignorePatterns: ['.eslintrc.js', 'build/**'],
   parserOptions: {
@@ -16,11 +17,21 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json'
   },
+  overrides: [
+    {
+      files: ['**/*.spec.ts', '**/*.test.ts'],
+      env: { jest: true },
+      rules: {
+        'jest/expect-expect': 'error',
+      },
+    },
+  ],
   rules: {
     '@eslint-community/eslint-comments/no-use':              'error',
     '@eslint-community/eslint-comments/no-unlimited-disable':'error',
     '@eslint-community/eslint-comments/disable-enable-pair':'error',
     '@eslint-community/eslint-comments/no-unused-disable':  'error',
+    'jest/no-standalone-expect': 'off',
 
     '@typescript-eslint/ban-ts-comment': ['error', {
       'ts-ignore':       true,
