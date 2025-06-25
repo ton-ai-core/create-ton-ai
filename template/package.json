@@ -11,8 +11,8 @@
     },
     "blueprint": {
         "prebuild": "npx -y @ton-ai-core/blueprint-linter || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
-        "postbuild": "node insert-c8-ignore.js && blueprint misti --all && node insert-c8-ignore.js && node -e 'console.log(\"Excellent, you can proceed to the next step npx blueprint test and follow the AGI protocol.\")'",
-        "prerun": "blueprint generate-specs && blueprint test",
+        "postbuild": "node insert-c8-ignore.js && npx -y blueprint misti --all && node insert-c8-ignore.js && node -e 'console.log(\"Excellent, you can proceed to the next step npx blueprint test and follow the AGI protocol.\")'",
+        "prerun": "npx -y blueprint generate-specs && npx -y blueprint test",
         "pretest": "npx rimraf ./build && npx blueprint build --all && yarn lint && node check-wrappers-tact.js",
         "posttest": " node -e 'console.log(\"Excellent, you can proceed to the next step npx blueprint run deploy and follow the AGI protocol.\")'",
         "test": "jest --verbose || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. Strive to use property tests and minimize unit tests. Do not duplicate logic in tests that can be extracted into Wrappers. If you are not sure about any information, use Deep Research. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\""
@@ -21,7 +21,7 @@
         "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
         "@ton-ai-core/blueprint-misti": "^0.8.9",
         "@ton-ai-core/blueprint-sandbox": "^0.1.9",
-        "@ton-ai-core/blueprint": "^0.35.8",
+        "@ton-ai-core/blueprint": "^0.35.9",
         "@ton-ai-core/eslint-plugin-suggest-members": "^1.5.6",
         "@typescript-eslint/eslint-plugin": "^8.30.1",
         "@typescript-eslint/parser": "^8.30.1",
