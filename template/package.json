@@ -15,7 +15,7 @@
         "prerun": "blueprint generate-specs && blueprint test",
         "pretest": "npx rimraf ./build && npx blueprint build --all && yarn lint && node check-wrappers-tact.js",
         "posttest": " node -e 'console.log(\"Excellent, you can proceed to the next step npx blueprint run deploy and follow the AGI protocol.\")'",
-        "test": "jest --verbose || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. Strive to use property tests and minimize unit tests. Do not duplicate logic in tests that can be extracted into Wrappers. If you are not sure about any information, use Deep Research. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
+        "test": "jest --verbose || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. Strive to use property tests and minimize unit tests. Do not duplicate logic in tests that can be extracted into Wrappers. If you are not sure about any information, use Deep Research. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\""
     },
     "devDependencies": {
         "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
