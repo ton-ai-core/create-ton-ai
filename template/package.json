@@ -12,7 +12,7 @@
     "blueprint": {
         "build": "npx blueprint action build %scriptArgs% || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
         "prebuild": "npx -y @ton-ai-core/blueprint-linter || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
-        "postbuild": "node insert-c8-ignore.js && npx -y blueprint misti --all && node insert-c8-ignore.js && node -e 'console.log(\"Excellent, you can proceed to the next step npx blueprint test and follow the AGI protocol.\")'",
+        "postbuild": "node insert-c8-ignore.js && npx -y blueprint misti --all && node insert-c8-ignore.js && node -e 'console.log(\"Great, you have written a basic version of a smart contract that compiles. I recommend checking the written code for compliance with the original technical task and moving on to the next stage 'npx bluperint test' using the fully autonomous AGI protocol\")'",
         "prerun": "npx -y blueprint generate-specs && npx -y blueprint test",
         "pretest": "npx rimraf ./build && npx blueprint build --all && yarn lint && node check-wrappers-tact.js",
         "posttest": " node -e 'console.log(\"Excellent, you can proceed to the next step npx blueprint run deploy and follow the AGI protocol.\")'",
