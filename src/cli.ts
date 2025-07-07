@@ -99,6 +99,11 @@ async function main() {
 
     if (name.length === 0) throw new Error('Cannot initialize a project with an empty name');
 
+    // Check if project name contains only English letters and digits
+    if (!/^[A-Z][a-zA-Z0-9]*$/.test(name)) {
+        throw new Error(`Project name '${name}' is invalid. Name must start with a capital letter and contain only English letters and digits.`);
+    }
+
     // Check if project directory exists and is not empty
     if (isDirectoryNotEmpty(projectPath)) {
         throw new Error(`Project directory '${desiredProjectName}' already exists and is not empty. Please choose a different name or empty the directory.`);
@@ -118,8 +123,13 @@ async function main() {
     if (!noCi) {
         if (contractName.length === 0) throw new Error(`Cannot create a contract with an empty name`);
 
-        if (contractName.toLowerCase() === 'contract' || !/^[A-Z][a-zA-Z0-9]*$/.test(contractName))
-            throw new Error(`Cannot create a contract with the name '${contractName}'`);
+        if (contractName.toLowerCase() === 'contract') {
+            throw new Error(`Cannot create a contract with the name '${contractName}' - this name is reserved`);
+        }
+
+        if (!/^[A-Z][a-zA-Z0-9]*$/.test(contractName)) {
+            throw new Error(`Contract name '${contractName}' is invalid. Name must start with a capital letter and contain only English letters and digits.`);
+        }
     }
 
     const argsVariant =
