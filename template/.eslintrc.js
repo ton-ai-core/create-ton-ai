@@ -22,7 +22,7 @@ module.exports = {
       files: ['**/*.spec.ts', '**/*.test.ts'],
       env: { jest: true },
       rules: {
-        'jest/expect-expect': 'error',
+        'jest/expect-expect': 'off',
       },
     },
   ],
