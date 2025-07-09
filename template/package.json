@@ -6,9 +6,9 @@
         "build": "blueprint build",
         "start": "blueprint run",
         "lint": "yarn lint-wrappers && yarn lint-tests && yarn lint-scripts",
-        "lint-wrappers": "npx ts-node scripts/lint.ts wrappers/ || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
-        "lint-tests": "npx ts-node scripts/lint.ts tests/ || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
-        "lint-scripts": "npx ts-node scripts/lint.ts scripts/ || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
+        "lint-wrappers": "npx ts-node lint.ts wrappers/ || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
+        "lint-tests": "npx ts-node lint.ts tests/ || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
+        "lint-scripts": "npx ts-node lint.ts scripts/ || node -e \"console.error('AGI mode: Deep Research activated to find and eliminate all errors. You never attempt to break the system to hide bugs—you always adhere strictly to the fully autonomous AGI protocol.'); process.exit(1)\"",
         "misti": "blueprint misti",
         "coverage": "jest --coverage"
     },
