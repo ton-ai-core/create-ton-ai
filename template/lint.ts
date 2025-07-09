@@ -60,6 +60,23 @@ const config: LinterConfig = fs.existsSync(configPath)
   : { priorityLevels: [] };
 
 //
+// Auto-fix ESLint issues
+//
+async function runESLintFix(targetPath: string): Promise<void> {
+  console.log(`🔧 Running ESLint auto-fix on: ${targetPath}`);
+  try {
+    const { stdout } = await execAsync(`npx eslint "${targetPath}" --ext .ts --fix`);
+    console.log(`✅ ESLint auto-fix completed`);
+  } catch (error: unknown) {
+    if (error && typeof error === 'object' && 'stdout' in error) {
+      console.log(`✅ ESLint auto-fix completed with warnings`);
+    } else {
+      console.error(`❌ ESLint auto-fix failed:`, error);
+    }
+  }
+}
+
+//
 // TypeScript diagnostics runner
 //
 async function getTypeScriptDiagnostics(targetPath: string): Promise<TypeScriptMessage[]> {
@@ -132,7 +149,10 @@ function filterMessagesByPath(messages: TypeScriptMessage[], targetPath: string)
 (async (): Promise<void> => {
   console.log(`🔍 Linting directory: ${targetPath}`);
   
-  // Run ESLint and TypeScript in parallel
+  // First run ESLint fix
+  await runESLintFix(targetPath);
+  
+  // Then run ESLint and TypeScript in parallel for remaining issues
   const [eslintResults, tsMessages] = await Promise.all([
     getESLintResults(targetPath),
     getTypeScriptDiagnostics(targetPath)
