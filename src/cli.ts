@@ -51,7 +51,45 @@ function generateProjectTree(directoryPath: string, prefix: string = '', maxDept
         }
 
         const items = fs.readdirSync(directoryPath);
-        const sortedItems = items.sort((a, b) => {
+        
+        // Filter out unwanted directories and files
+        const filteredItems = items.filter(item => {
+            const itemPath = path.join(directoryPath, item);
+            const isDirectory = fs.statSync(itemPath).isDirectory();
+            
+            // Skip node_modules, .git, and other common directories
+            if (isDirectory && (
+                item === 'node_modules' || 
+                item === '.git' || 
+                item === 'dist' || 
+                item === 'build' || 
+                item === 'temp' ||
+                item === '.next' ||
+                item === '.nuxt' ||
+                item === '.cache' ||
+                item === 'coverage' ||
+                item === '.nyc_output'
+            )) {
+                return false;
+            }
+            
+            // Skip common files that are not important for project structure
+            if (!isDirectory && (
+                item === '.DS_Store' ||
+                item === 'Thumbs.db' ||
+                item === '.gitignore' ||
+                item === '.npmignore' ||
+                item === 'package-lock.json' ||
+                item === 'yarn.lock' ||
+                item === 'pnpm-lock.yaml'
+            )) {
+                return false;
+            }
+            
+            return true;
+        });
+
+        const sortedItems = filteredItems.sort((a, b) => {
             const aIsDir = fs.statSync(path.join(directoryPath, a)).isDirectory();
             const bIsDir = fs.statSync(path.join(directoryPath, b)).isDirectory();
             if (aIsDir && !bIsDir) return -1;
@@ -104,7 +142,37 @@ function formatProjectTree(directoryPath: string): string {
                 let count = 0;
                 for (const item of items) {
                     const itemPath = path.join(dirPath, item);
-                    if (fs.statSync(itemPath).isDirectory()) {
+                    const isDirectory = fs.statSync(itemPath).isDirectory();
+                    
+                    // Skip unwanted directories and files
+                    if (isDirectory && (
+                        item === 'node_modules' || 
+                        item === '.git' || 
+                        item === 'dist' || 
+                        item === 'build' || 
+                        item === 'temp' ||
+                        item === '.next' ||
+                        item === '.nuxt' ||
+                        item === '.cache' ||
+                        item === 'coverage' ||
+                        item === '.nyc_output'
+                    )) {
+                        continue;
+                    }
+                    
+                    if (!isDirectory && (
+                        item === '.DS_Store' ||
+                        item === 'Thumbs.db' ||
+                        item === '.gitignore' ||
+                        item === '.npmignore' ||
+                        item === 'package-lock.json' ||
+                        item === 'yarn.lock' ||
+                        item === 'pnpm-lock.yaml'
+                    )) {
+                        continue;
+                    }
+                    
+                    if (isDirectory) {
                         count += countFilesInDir(itemPath);
                     } else {
                         count++;
