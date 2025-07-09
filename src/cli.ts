@@ -36,6 +36,105 @@ const VARIANT_CHOICES = [
     },
 ];
 
+// Function to generate project tree structure
+function generateProjectTree(directoryPath: string, prefix: string = '', maxDepth: number = 3, currentDepth: number = 0): string[] {
+    const tree: string[] = [];
+    
+    if (currentDepth >= maxDepth) {
+        tree.push(`${prefix}└── ... (max depth reached)`);
+        return tree;
+    }
+
+    try {
+        if (!fs.existsSync(directoryPath)) {
+            return tree;
+        }
+
+        const items = fs.readdirSync(directoryPath);
+        const sortedItems = items.sort((a, b) => {
+            const aIsDir = fs.statSync(path.join(directoryPath, a)).isDirectory();
+            const bIsDir = fs.statSync(path.join(directoryPath, b)).isDirectory();
+            if (aIsDir && !bIsDir) return -1;
+            if (!aIsDir && bIsDir) return 1;
+            return a.localeCompare(b);
+        });
+
+        for (let i = 0; i < sortedItems.length; i++) {
+            const item = sortedItems[i];
+            const itemPath = path.join(directoryPath, item);
+            const isLast = i === sortedItems.length - 1;
+            const isDirectory = fs.statSync(itemPath).isDirectory();
+            
+            const connector = isLast ? '└── ' : '├── ';
+            const nextPrefix = isLast ? '    ' : '│   ';
+            
+            if (isDirectory) {
+                tree.push(`${prefix}${connector}${item}/`);
+                const subItems = fs.readdirSync(itemPath);
+                if (subItems.length > 0) {
+                    const subTree = generateProjectTree(itemPath, prefix + nextPrefix, maxDepth, currentDepth + 1);
+                    tree.push(...subTree);
+                }
+            } else {
+                tree.push(`${prefix}${connector}${item}`);
+            }
+        }
+    } catch (error) {
+        tree.push(`${prefix}└── ... (error reading directory)`);
+    }
+    
+    return tree;
+}
+
+// Function to format project tree with file counts
+function formatProjectTree(directoryPath: string): string {
+    try {
+        if (!fs.existsSync(directoryPath)) {
+            return 'Directory does not exist';
+        }
+
+        const tree = generateProjectTree(directoryPath);
+        const projectName = path.basename(directoryPath);
+        
+        // Count files in each directory
+        const dirCounts: Record<string, number> = {};
+        const countFilesInDir = (dirPath: string): number => {
+            try {
+                const items = fs.readdirSync(dirPath);
+                let count = 0;
+                for (const item of items) {
+                    const itemPath = path.join(dirPath, item);
+                    if (fs.statSync(itemPath).isDirectory()) {
+                        count += countFilesInDir(itemPath);
+                    } else {
+                        count++;
+                    }
+                }
+                return count;
+            } catch {
+                return 0;
+            }
+        };
+
+        // Add file counts to directory lines
+        const formattedTree = tree.map(line => {
+            if (line.includes('/') && !line.includes('...')) {
+                const dirName = line.split('/')[0].split('── ').pop() || '';
+                const dirPath = path.join(directoryPath, dirName);
+                if (fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory()) {
+                    const fileCount = countFilesInDir(dirPath);
+                    return `${line} (${fileCount} files)`;
+                }
+            }
+            return line;
+        });
+
+        return `${projectName}/\n${formattedTree.join('\n')}`;
+    } catch (error) {
+        return 'Error generating project tree';
+    }
+}
+
 // Function to check if a directory exists and is not empty
 function isDirectoryNotEmpty(directoryPath: string): boolean {
     try {
@@ -69,12 +168,45 @@ function isInsideContractProject(): boolean {
     }
 }
 
+// Function to find the nearest contract project
+function findNearestContractProject(): string | null {
+    try {
+        let currentDir = process.cwd();
+        const rootDir = path.parse(currentDir).root;
+        
+        while (currentDir !== rootDir) {
+            const blueprintConfigPath = path.join(currentDir, 'blueprint.config.ts');
+            if (fs.existsSync(blueprintConfigPath)) {
+                return currentDir;
+            }
+            currentDir = path.dirname(currentDir);
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+}
+
 async function main() {
     console.log();
 
     // Check if we're inside another contract project
     if (isInsideContractProject()) {
-        throw new Error('Cannot create a contract inside another contract project. Please run this command from a different directory.');
+        const nearestProject = findNearestContractProject();
+        console.log(chalk.red('❌ Error: Cannot create a contract inside another contract project.'));
+        console.log(chalk.yellow('Please run this command from a different directory.'));
+        
+        if (nearestProject) {
+            console.log(chalk.cyan('\n📁 You are currently inside this contract project:'));
+            console.log(chalk.cyan(`   ${nearestProject}`));
+            console.log(chalk.cyan('\n📂 Project structure:'));
+            console.log(chalk.gray('```'));
+            console.log(formatProjectTree(nearestProject));
+            console.log(chalk.gray('```'));
+        }
+        
+        console.log(chalk.yellow('\n💡 Solution: Change to a different directory and try again.'));
+        process.exit(1);
     }
 
     const localArgs = arg({
@@ -97,16 +229,33 @@ async function main() {
 
     const name = path.basename(projectPath);
 
-    if (name.length === 0) throw new Error('Cannot initialize a project with an empty name');
+    if (name.length === 0) {
+        console.log(chalk.red('❌ Error: Cannot initialize a project with an empty name.'));
+        process.exit(1);
+    }
 
     // Check if project name contains only English letters and digits
     if (!/^[A-Z][a-zA-Z0-9]*$/.test(name)) {
-        throw new Error(`Project name '${name}' is invalid. Name must start with a capital letter and contain only English letters and digits.`);
+        console.log(chalk.red(`❌ Error: Project name '${name}' is invalid.`));
+        console.log(chalk.yellow('Name must start with a capital letter and contain only English letters and digits.'));
+        process.exit(1);
     }
 
     // Check if project directory exists and is not empty
     if (isDirectoryNotEmpty(projectPath)) {
-        throw new Error(`Project directory '${desiredProjectName}' already exists and is not empty. Please choose a different name or empty the directory.`);
+        console.log(chalk.red(`❌ Error: Project directory '${desiredProjectName}' already exists and is not empty.`));
+        console.log(chalk.yellow('Please choose a different name or empty the directory.'));
+        
+        console.log(chalk.cyan('\n📂 Current project structure:'));
+        console.log(chalk.gray('```'));
+        console.log(formatProjectTree(projectPath));
+        console.log(chalk.gray('```'));
+        
+        console.log(chalk.yellow('\n💡 Solutions:'));
+        console.log(chalk.yellow('   1. Choose a different project name'));
+        console.log(chalk.yellow('   2. Delete or rename the existing directory'));
+        console.log(chalk.yellow('   3. Use --no-ci flag to skip contract creation'));
+        process.exit(1);
     }
 
     const noCi = localArgs['--no-ci'] ?? false;
@@ -121,14 +270,20 @@ async function main() {
         ).contractName.trim();
 
     if (!noCi) {
-        if (contractName.length === 0) throw new Error(`Cannot create a contract with an empty name`);
+        if (contractName.length === 0) {
+            console.log(chalk.red('❌ Error: Cannot create a contract with an empty name.'));
+            process.exit(1);
+        }
 
         if (contractName.toLowerCase() === 'contract') {
-            throw new Error(`Cannot create a contract with the name '${contractName}' - this name is reserved`);
+            console.log(chalk.red(`❌ Error: Cannot create a contract with the name '${contractName}' - this name is reserved.`));
+            process.exit(1);
         }
 
         if (!/^[A-Z][a-zA-Z0-9]*$/.test(contractName)) {
-            throw new Error(`Contract name '${contractName}' is invalid. Name must start with a capital letter and contain only English letters and digits.`);
+            console.log(chalk.red(`❌ Error: Contract name '${contractName}' is invalid.`));
+            console.log(chalk.yellow('Name must start with a capital letter and contain only English letters and digits.'));
+            process.exit(1);
         }
     }
 
@@ -242,19 +397,37 @@ Session.vim
             execCommand = 'bun x';
             break;
     }
-    execSync(
-        `${execCommand} blueprint${pkgManager !== 'npm' ? '' : ' --'} create ${contractName} --type ${variant}`,
-        execOpts
-    );
+    try {
+        execSync(
+            `${execCommand} blueprint${pkgManager !== 'npm' ? '' : ' --'} create ${contractName} --type ${variant}`,
+            execOpts
+        );
+    } catch (e) {
+        console.log(chalk.red('❌ Error: Failed to create contract.'));
+        console.log(chalk.yellow('This might be due to:'));
+        console.log(chalk.yellow('   - Missing dependencies'));
+        console.log(chalk.yellow('   - Network connectivity issues'));
+        console.log(chalk.yellow('   - Invalid contract type'));
+        console.log(chalk.gray(`\nTechnical details: ${(e as any).toString()}`));
+        process.exit(1);
+    }
 
     try {
         execSync('git init', execOpts);
     } catch (e) {
-        console.error('Failed to initialize git repository:', (e as any).toString());
+        console.log(chalk.yellow('⚠️  Warning: Failed to initialize git repository.'));
+        console.log(chalk.gray(`Technical details: ${(e as any).toString()}`));
     }
 
     printResultingUsageDetails(desiredProjectName, noCi, contractName, variant);
 }
+
+main().catch((error) => {
+    console.log(chalk.red('❌ Unexpected error occurred:'));
+    console.log(chalk.red(error.message || error.toString()));
+    console.log(chalk.yellow('\n💡 Please check your input and try again.'));
+    process.exit(1);
+});
 
 function generateSearchKeywords(projectName: string, contractName: string, variant: string): string[] {
     const langKey = (variant || '').split('-')[0];
@@ -345,5 +518,3 @@ function printResultingUsageDetails(desiredProjectName: string, noCi: boolean, c
     console.log(`For help and docs visit https://github.com/ton-ai-core/blueprint`);
     console.log(``);
 }
-
-main().catch(console.error);
