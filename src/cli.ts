@@ -312,7 +312,7 @@ async function main() {
     // Check if project directory exists and is not empty
     if (isDirectoryNotEmpty(projectPath)) {
         console.log(chalk.red(`❌ Error: Project directory '${desiredProjectName}' already exists and is not empty.`));
-        console.log(chalk.yellow('Please choose a different name or empty the directory.'));
+        console.log(chalk.yellow('Please use a different project name or edit the existing project.'));
         
         console.log(chalk.cyan('\n📂 Current project structure:'));
         console.log(chalk.gray('```'));
@@ -320,8 +320,8 @@ async function main() {
         console.log(chalk.gray('```'));
         
         console.log(chalk.yellow('\n💡 Solutions:'));
-        console.log(chalk.yellow('   1. Choose a different project name'));
-        console.log(chalk.yellow('   2. Delete or rename the existing directory'));
+        console.log(chalk.yellow('   1. Use a different project name'));
+        console.log(chalk.yellow('   2. Edit the existing project instead of creating a new one'));
         console.log(chalk.yellow('   3. Use --no-ci flag to skip contract creation'));
         process.exit(1);
     }
