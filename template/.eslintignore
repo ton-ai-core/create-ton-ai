@@ -3,3 +3,4 @@ build/
 node_modules/ 
 check-wrappers-tact.js
 insert-c8-ignore.js
+lint.ts
