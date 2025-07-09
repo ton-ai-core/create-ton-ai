@@ -322,7 +322,6 @@ async function main() {
         console.log(chalk.yellow('\n💡 Solutions:'));
         console.log(chalk.yellow('   1. Use a different project name'));
         console.log(chalk.yellow('   2. Edit the existing project instead of creating a new one'));
-        console.log(chalk.yellow('   3. Use --no-ci flag to skip contract creation'));
         process.exit(1);
     }
 
