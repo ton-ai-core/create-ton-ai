@@ -73,7 +73,31 @@ function generateProjectTree(directoryPath: string, prefix: string = '', maxDept
                 return false;
             }
             
-            // Skip common files that are not important for project structure
+            // For root directory, show only main folders and key config files
+            if (currentDepth === 0) {
+                // Show main project directories
+                if (isDirectory && (
+                    item === 'contracts' ||
+                    item === 'scripts' ||
+                    item === 'tests' ||
+                    item === 'wrappers'
+                )) {
+                    return true;
+                }
+                
+                // Show only key configuration files
+                if (!isDirectory && (
+                    item === 'package.json' ||
+                    item === 'blueprint.config.ts' ||
+                    item === 'tsconfig.json'
+                )) {
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            // For subdirectories, show all files but skip common unwanted ones
             if (!isDirectory && (
                 item === '.DS_Store' ||
                 item === 'Thumbs.db' ||
@@ -136,7 +160,7 @@ function formatProjectTree(directoryPath: string): string {
         
         // Count files in each directory
         const dirCounts: Record<string, number> = {};
-        const countFilesInDir = (dirPath: string): number => {
+        const countFilesInDir = (dirPath: string, depth: number = 0): number => {
             try {
                 const items = fs.readdirSync(dirPath);
                 let count = 0;
@@ -160,6 +184,19 @@ function formatProjectTree(directoryPath: string): string {
                         continue;
                     }
                     
+                    // For root directory, only count main project directories
+                    if (depth === 0) {
+                        if (isDirectory && (
+                            item === 'contracts' ||
+                            item === 'scripts' ||
+                            item === 'tests' ||
+                            item === 'wrappers'
+                        )) {
+                            count += countFilesInDir(itemPath, depth + 1);
+                        }
+                        continue;
+                    }
+                    
                     if (!isDirectory && (
                         item === '.DS_Store' ||
                         item === 'Thumbs.db' ||
@@ -173,7 +210,7 @@ function formatProjectTree(directoryPath: string): string {
                     }
                     
                     if (isDirectory) {
-                        count += countFilesInDir(itemPath);
+                        count += countFilesInDir(itemPath, depth + 1);
                     } else {
                         count++;
                     }
@@ -190,7 +227,7 @@ function formatProjectTree(directoryPath: string): string {
                 const dirName = line.split('/')[0].split('── ').pop() || '';
                 const dirPath = path.join(directoryPath, dirName);
                 if (fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory()) {
-                    const fileCount = countFilesInDir(dirPath);
+                    const fileCount = countFilesInDir(dirPath, 1); // Start from depth 1 for subdirectories
                     return `${line} (${fileCount} files)`;
                 }
             }
